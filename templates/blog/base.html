@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>Shamnad's Blog</title>
+        <title>A Simple Blog</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
@@ -10,13 +10,9 @@
 
 <body>
     <div class="page-header">
-     <!--
-{% if user.is_authenticated %}
-    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-{% endif %}
--->
-        <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span><span style="font-size: 0.8em"> Add New</span></a>
-        <h1><a href="/">Shamnad's  Blog</a></h1>
+        <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span><span style="font-size: 0.7em"> Add New</span></a>
+
+        <h1><a href="/">A Simple  Blog</a></h1>
     </div>
     <div class="content container">
         <div class="row">

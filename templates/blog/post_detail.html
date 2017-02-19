@@ -1,6 +1,12 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    {% if newItem %}
+            <div class="added">Added New Post "{{ newItem }}" Successfully</div>
+    {% endif %}
+    {% if savedItem %}
+            <div class="added">Saved the changes for "{{ savedItem }}" Successfully</div>
+    {% endif %}
     <div class="post">
         {% if post.published_date %}
             <div class="date">
