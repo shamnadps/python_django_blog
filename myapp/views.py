@@ -3,8 +3,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import Post
 from .forms import PostForm
-
+from rest_framework import status
+from rest_framework.response import Response
+from myapp.utils.messages import USER_ALREADY_EXISTS, ERROR_RESP, USER_CREATED
 # Create your views here.
+
+
 def post_list(request):
     request.session['new'] = ''
     request.session['saved'] = ''
