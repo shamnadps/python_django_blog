@@ -17,26 +17,28 @@ class CreateUserView(APIView):
     The view handles the user operations.
     """
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         """
         :param request:
         :param format:
         :return:
         """
-        username = request.data['username']
-        password = request.data['password']
-        email = request.data.get('email', None)
-        phone = request.data.get('phone', None)
+        username = request.GET.get('user', None)
+        password = request.GET.get('pass', None)
+        phone = request.GET.get('phone', None)
         if SalesTracker_User.objects.filter(phone=phone).exists():
             ERROR_RESP['error']['message'] = USER_ALREADY_EXISTS
             return Response(status=status.HTTP_409_CONFLICT, data=ERROR_RESP)
         else:
-            user = SalesTracker_User(username,password, phone, timezone.now(), "active")
+		
+            user = SalesTracker_User(phone,username,password, phone, timezone.now(), 'true');
+            user.created_date = timezone.now();
+            user.save();
 
         # Building the response
         USER_CREATED['data']['username'] = username
-        USER_CREATED['data']['email'] = email
-        USER_CREATED['data']['id'] = user.userid
-        return Response(status=status.HTTP_201_CREATED, data=USER_CREATED)
+        USER_CREATED['data']['phone'] = phone
+        users = SalesTracker_User.objects.filter(created_date__lte=timezone.now()).values()
+        return Response(status=status.HTTP_201_CREATED, data=users)
 
 

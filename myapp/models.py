@@ -19,13 +19,12 @@ class Post(models.Model):
         return self.title
 
 class SalesTracker_User(models.Model):
-    userid = models.ForeignKey('auth.User')
     user_name = models.TextField()
     password = models.TextField()
     phone = models.TextField()
     created_date = models.DateTimeField(
             default=timezone.now)
-    status = models.BooleanField()
+    status = models.TextField()
 
     class Meta:
         managed = True
