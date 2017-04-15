@@ -18,7 +18,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-class SalesTracker_User(models.Model):
+class SalesTrackerUser(models.Model):
     user_name = models.TextField()
     password = models.TextField()
     phone = models.TextField()
