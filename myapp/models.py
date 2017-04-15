@@ -18,7 +18,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-class SalesTracker_User(models.Model):
+class SalesTrackerUser(models.Model):
     user_name = models.TextField()
     password = models.TextField()
     phone = models.TextField()
@@ -36,3 +36,21 @@ class SalesTracker_User(models.Model):
 
     def __str__(self):
         return self.user_name
+		
+class UserLocation(models.Model):
+    phone = models.TextField()
+    latitude = models.TextField()
+    longitude = models.TextField()
+    address = models.TextField(default='Nothing')
+    created_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        managed = True
+        db_table = 'user_location'
+
+    def saveuser(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.phone

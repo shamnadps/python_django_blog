@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Post,SalesTrackerUser,UserLocation
 from .forms import PostForm
 from rest_framework import status
 from rest_framework.response import Response
-from myapp.utils.messages import USER_ALREADY_EXISTS, ERROR_RESP, USER_CREATED
+from rest_framework.decorators import api_view
+from myapp.utils.messages import USER_ALREADY_EXISTS, ERROR_RESP, USER_CREATED, NOT_REGISTERED
 # Create your views here.
 
 
@@ -67,3 +68,65 @@ def post_delete(request, pk):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 
     return render(request, 'blog/post_list.html', {'posts': posts,'deletedItem':deletedItem})
+
+@api_view(['GET', 'POST', ])
+def user_regist(request):
+    """
+    :param request:
+    :param format:
+    :return:
+    """
+    username = request.GET.get('user', None)
+    password = request.GET.get('pass', None)
+    phone = request.GET.get('phone', None)
+    if SalesTrackerUser.objects.filter(phone=phone).exists():
+        ERROR_RESP['error']['message'] = USER_ALREADY_EXISTS
+        return Response(status=status.HTTP_409_CONFLICT, data=ERROR_RESP)
+    else:
+
+        user = SalesTrackerUser(phone,username,password, phone, timezone.now(), 'true');
+        user.created_date = timezone.now();
+        user.save();
+
+    # Building the response
+    USER_CREATED['data']['username'] = username
+    USER_CREATED['data']['phone'] = phone
+    users = SalesTrackerUser.objects.filter(created_date__lte=timezone.now()).values()
+    return Response(status=status.HTTP_201_CREATED, data=users)
+
+@api_view(['GET', 'POST', ])
+def getallusers(request):
+    users = SalesTrackerUser.objects.filter(created_date__lte=timezone.now()).values()
+    return Response(status=status.HTTP_201_CREATED, data=users)
+
+@api_view(['GET', 'POST', ])
+def checkphone(request):
+    phonenumber = request.GET.get('phone', None)
+    if SalesTrackerUser.objects.filter(phone=phonenumber).exists():
+        user = SalesTrackerUser.objects.filter(phone=phonenumber).values()
+        return Response(status=status.HTTP_201_CREATED, data=user)
+    else:
+        ERROR_RESP['error']['message'] = NOT_REGISTERED
+        return Response(status=status.HTTP_409_CONFLICT, data=ERROR_RESP)
+		
+
+@api_view(['GET', 'POST', ])
+def getuserlocation(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    userlocations = UserLocation.objects.filter(phone=phonenumber).values()
+    return Response(status=status.HTTP_201_CREATED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def saveuserlocation(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    latitude = request.GET.get('latitude', None)
+    longitude = request.GET.get('longitude', None)
+    address = request.GET.get('address', None)
+    userlocation = UserLocation(phonenumber,phonenumber,latitude,longitude,address,timezone.now());
+    userlocation.save();
+    return Response(status=status.HTTP_201_CREATED, data='Success')
+
+@api_view(['GET', 'POST', ])
+def getalllocations(request):
+    userlocations = UserLocation.objects.filter(created_date__lte=timezone.now()).values()
+    return Response(status=status.HTTP_201_CREATED, data=userlocations)
