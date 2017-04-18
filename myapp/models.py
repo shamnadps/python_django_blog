@@ -58,3 +58,26 @@ class UserLocation(models.Model):
 
     def __str__(self):
         return self.phone
+
+class DriverRoute(models.Model):
+    phone = models.TextField()
+    startlocation_latitude = models.TextField(blank=True, null=True)
+    startlocation_longitude = models.TextField(blank=True, null=True)
+    endlocation_latitude = models.TextField(blank=True, null=True)
+    endlocation_longitude = models.TextField(blank=True, null=True)
+    traveldate = models.TextField(blank=True, null=True)
+    repeated = models.TextField(blank=True, null=True)
+    days = models.TextField(blank=True, null=True);
+    created_date = models.DateTimeField(default=timezone.now)
+
+
+    class Meta:
+        managed = True
+        db_table = 'driver_route'
+
+    def saveuser(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.phone

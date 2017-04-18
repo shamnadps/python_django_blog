@@ -23,4 +23,8 @@ urlpatterns = [
 	url(r'^salestracker/removeuserbyphonenumber/$', views.removeuserbyphonenumber, name='removeuserbyphonenumber'),
 	url(r'^salestracker/removeuserlocationbyphonenumber/$', views.removeuserlocationbyphonenumber, name='removeuserlocationbyphonenumber'),
 	url(r'^salestracker/getalllocationsforcurrentday/$', views.getalllocationsforcurrentday, name='getalllocationsforcurrentday'),
+	url(r'^salestracker/savedriverroute/$', views.savedriverroute, name='savedriverroute'),
+	url(r'^salestracker/deletedriverroute/$', views.deletedriverroute, name='deletedriverroute'),
+	url(r'^salestracker/getdriverroute/$', views.getdriverroute, name='getdriverroute'),
+	url(r'^salestracker/getalldriverroute/$', views.getalldriverroute, name='getalldriverroute'),
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.models import User
-from .models import Post,SalesTrackerUser,UserLocation
+from .models import Post,SalesTrackerUser,UserLocation,DriverRoute
 from .forms import PostForm
 from rest_framework import status
 from rest_framework.response import Response
@@ -180,3 +180,34 @@ def getalllocations(request):
 def getalllocationsforcurrentday(request):
     userlocations = UserLocation.objects.filter(created_date__lte=timezone.now()).values()
     return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def savedriverroute(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    startlocation_latitude = request.GET.get('startlocation_latitude', None)
+    startlocation_longitude = request.GET.get('startlocation_longitude', None)
+    endlocation_latitude = request.GET.get('endlocation_latitude', None)
+    endlocation_longitude = request.GET.get('endlocation_longitude', None)
+    traveldate = request.GET.get('traveldate', None)
+    repeated = request.GET.get('repeated', None)
+    days = request.GET.get('days', None)
+    driverRoute = DriverRoute(None,phonenumber,startlocation_latitude,startlocation_longitude,endlocation_latitude,endlocation_longitude,traveldate,repeated,days);
+    driverRoute.save();
+    return Response(status=status.HTTP_201_CREATED, data='Success')
+
+@api_view(['GET', 'POST', ])
+def getdriverroute(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    getdriverroute = DriverRoute.objects.filter(phone=phonenumber).values();
+    return Response(status=status.HTTP_202_ACCEPTED, data=getdriverroute)
+
+@api_view(['GET', 'POST', ])
+def getalldriverroute(request):
+    getdriverroutes = DriverRoute.objects.all().values();
+    return Response(status=status.HTTP_202_ACCEPTED, data=getdriverroutes)
+
+@api_view(['GET', 'POST', ])
+def deletedriverroute(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    getdriverroute = DriverRoute.objects.filter(phone=phonenumber).delete();
+    return Response(status=status.HTTP_202_ACCEPTED, data=getdriverroute)
