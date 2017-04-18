@@ -41,8 +41,12 @@ class UserLocation(models.Model):
     phone = models.TextField()
     latitude = models.TextField()
     longitude = models.TextField()
-    address = models.TextField(default='Nothing')
+    address = models.TextField(default=' ')
     created_date = models.DateTimeField(default=timezone.now)
+    city = models.TextField(default=' ');
+    state = models.TextField(default=' ');
+    country = models.TextField(default=' ');
+
 
     class Meta:
         managed = True

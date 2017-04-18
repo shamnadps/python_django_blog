@@ -117,6 +117,45 @@ def getuserlocation(request):
     return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
 
 @api_view(['GET', 'POST', ])
+def getuserlocationbycity(request):
+    city = request.GET.get('city', None)
+    userlocations = UserLocation.objects.filter(city=city).values()
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def getuserlocationbystate(request):
+    state = request.GET.get('state', None)
+    userlocations = UserLocation.objects.filter(state=state).values()
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def getuserlocationbycountry(request):
+    country = request.GET.get('country', None)
+    userlocations = UserLocation.objects.filter(country=country).values()
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def getuserlocationbycityandphone(request):
+    city = request.GET.get('city', None)
+    phonenumber = request.GET.get('phonenumber', None)
+    userlocations = UserLocation.objects.filter(city=city).filter(phone=phonenumber).values()
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def getuserlocationbystateandphone(request):
+    state = request.GET.get('state', None)
+    phonenumber = request.GET.get('phonenumber', None)
+    userlocations = UserLocation.objects.filter(state=state).filter(phone=phonenumber).values()
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def getuserlocationbycountryandphone(request):
+    country = request.GET.get('country', None)
+    phonenumber = request.GET.get('phonenumber', None)
+    userlocations = UserLocation.objects.filter(country=country).filter(phone=phonenumber).values()
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
 def saveuserlocation(request):
     phonenumber = request.GET.get('phonenumber', None)
     latitude = request.GET.get('latitude', None)
