@@ -14,4 +14,7 @@ urlpatterns = [
 	url(r'^salestracker/saveuserlocation/$', views.saveuserlocation, name='saveuserlocation'),
 	url(r'^salestracker/getallusers/$', views.getallusers, name='getallusers'),
 	url(r'^salestracker/getalllocations/$', views.getalllocations, name='getalllocations'),
+	url(r'^salestracker/removeuserbyphonenumber/$', views.removeuserbyphonenumber, name='removeuserbyphonenumber'),
+	url(r'^salestracker/removeuserlocationbyphonenumber/$', views.removeuserlocationbyphonenumber, name='removeuserlocationbyphonenumber'),
+	url(r'^salestracker/getalllocationsforcurrentday/$', views.getalllocationsforcurrentday, name='getalllocationsforcurrentday'),
 ]

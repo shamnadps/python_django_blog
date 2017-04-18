@@ -71,11 +71,6 @@ def post_delete(request, pk):
 
 @api_view(['GET', 'POST', ])
 def user_regist(request):
-    """
-    :param request:
-    :param format:
-    :return:
-    """
     username = request.GET.get('user', None)
     password = request.GET.get('pass', None)
     phone = request.GET.get('phone', None)
@@ -83,8 +78,7 @@ def user_regist(request):
         ERROR_RESP['error']['message'] = USER_ALREADY_EXISTS
         return Response(status=status.HTTP_409_CONFLICT, data=ERROR_RESP)
     else:
-
-        user = SalesTrackerUser(phone,username,password, phone, timezone.now(), 'true');
+        user = SalesTrackerUser(None,username,password, phone, timezone.now(), 'true');
         user.created_date = timezone.now();
         user.save();
 
@@ -96,25 +90,31 @@ def user_regist(request):
 
 @api_view(['GET', 'POST', ])
 def getallusers(request):
-    users = SalesTrackerUser.objects.filter(created_date__lte=timezone.now()).values()
-    return Response(status=status.HTTP_201_CREATED, data=users)
+    users = SalesTrackerUser.objects.all().values();
+    return Response(status=status.HTTP_202_ACCEPTED, data=users)
+
+@api_view(['GET', 'POST', ])
+def removeuserbyphonenumber(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    users = SalesTrackerUser.objects.filter(phone=phonenumber).delete();
+    return Response(status=status.HTTP_202_ACCEPTED, data=users)
 
 @api_view(['GET', 'POST', ])
 def checkphone(request):
     phonenumber = request.GET.get('phone', None)
     if SalesTrackerUser.objects.filter(phone=phonenumber).exists():
         user = SalesTrackerUser.objects.filter(phone=phonenumber).values()
-        return Response(status=status.HTTP_201_CREATED, data=user)
+        return Response(status=status.HTTP_202_ACCEPTED, data=user)
     else:
         ERROR_RESP['error']['message'] = NOT_REGISTERED
-        return Response(status=status.HTTP_409_CONFLICT, data=ERROR_RESP)
+        return Response(status=status.HTTP_202_ACCEPTED, data=ERROR_RESP)
 		
 
 @api_view(['GET', 'POST', ])
 def getuserlocation(request):
     phonenumber = request.GET.get('phonenumber', None)
     userlocations = UserLocation.objects.filter(phone=phonenumber).values()
-    return Response(status=status.HTTP_201_CREATED, data=userlocations)
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
 
 @api_view(['GET', 'POST', ])
 def saveuserlocation(request):
@@ -122,11 +122,22 @@ def saveuserlocation(request):
     latitude = request.GET.get('latitude', None)
     longitude = request.GET.get('longitude', None)
     address = request.GET.get('address', None)
-    userlocation = UserLocation(phonenumber,phonenumber,latitude,longitude,address,timezone.now());
+    userlocation = UserLocation(None,phonenumber,latitude,longitude,address,timezone.now());
     userlocation.save();
     return Response(status=status.HTTP_201_CREATED, data='Success')
 
 @api_view(['GET', 'POST', ])
+def removeuserlocationbyphonenumber(request):
+    phonenumber = request.GET.get('phonenumber', None)
+    userlocation = UserLocation.objects.filter(phone=phonenumber).delete();
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocation)
+
+@api_view(['GET', 'POST', ])
 def getalllocations(request):
+    userlocations = UserLocation.objects.all().values();
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
+
+@api_view(['GET', 'POST', ])
+def getalllocationsforcurrentday(request):
     userlocations = UserLocation.objects.filter(created_date__lte=timezone.now()).values()
-    return Response(status=status.HTTP_201_CREATED, data=userlocations)
+    return Response(status=status.HTTP_202_ACCEPTED, data=userlocations)
